@@ -1,7 +1,20 @@
-from gen.JavythonListener import JavythonListener
-from gen.JavythonParser import JavythonParser
+from antlr4 import *
+from JavythonLexer import JavythonLexer
+from JavythonParser import JavythonParser
+from JavythonListener import JavythonListener
+from antlr4.tree.Tree import ParseTreeWalker
+import sys
+from anytree import Node, RenderTree
+from antlr4.error.ErrorListener import ErrorListener
 
-class AcoesSemanticas(JavythonListener):
+class errorLexerListener(ErrorListener):
+    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+        print(f"Erro de sintaxe na linha {line}, coluna {column}: {msg}")
+        raise Exception(f"Erro de sintaxe: {msg}")
+    
+
+
+class sintatic(JavythonListener):
     def __init__(self):
         # Simula tipos de variáveis (tudo lowercase por insensibilidade a maiúsculas)
         self.tabela_simbolos = {
@@ -79,3 +92,63 @@ class AcoesSemanticas(JavythonListener):
         elif ctx.expressao():
             return self.inferirTipo(ctx.expressao(0))
         return "desconhecido"
+
+
+# Adiciona uma implementação simples de TreeBuilder para evitar erro de definição
+class TreeBuilder(JavythonListener):
+    def __init__(self, parser):
+        self.parser = parser
+        self.root = Node("root", tipo="root")
+
+    # Exemplo de método enter para construir a árvore (adapte conforme necessário)
+    def enterEveryRule(self, ctx):
+        pass
+
+    def exitEveryRule(self, ctx):
+        pass
+
+def main():
+    input_stream = FileStream(sys.argv[1])
+    lexer = JavythonLexer(input_stream)
+    stream = CommonTokenStream(lexer)
+    parser = JavythonParser(stream)
+
+    error_lexer = errorLexerListener()
+    lexer.removeErrorListeners()
+    lexer.addErrorListener(error_lexer)
+
+    token_stream = CommonTokenStream(lexer)
+    token_stream.fill()
+    parser = JavythonParser(token_stream)
+    # parser.removeErrorListeners()
+    tree = parser.file_()
+    # tree = parser.programa()
+
+    # Cria o listener e o walker
+    # listener = sintatic()
+    
+    # Adiciona um listener de erro
+    # parser.removeErrorListeners()
+    # parser.addErrorListener(ErrorListener())
+
+    # Faz a caminhada na árvore
+    # walker.walk(listener, tree)
+
+    tree_builder = TreeBuilder(parser)
+    walker = ParseTreeWalker()
+    walker.walk(tree_builder, tree)
+
+    if parser.getNumberOfSyntaxErrors() <=0 and error_lexer.error_count <= 0:
+        print("Análise sintática concluída sem erros.")
+        for pre, fill, node in RenderTree(tree_builder.root):
+            print(f"{pre}{node.name} (tipo: {node.tipo})")
+    # Exibe os erros encontrados
+    # if listener.erros:
+    #     print("Erros encontrados:")
+    #     for erro in listener.erros:
+    #         print(erro)
+    # else:
+    #     print("Sem erros.")
+
+if __name__ == '__main__':
+    main()

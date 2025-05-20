@@ -36,22 +36,18 @@ breakCmd    : 'break' ';' ;
 ifCmd       : 'if' '(' expressao ')' '{' comando* '}' ('else' '{' comando* '}')? ;
 whileCmd    : 'while' '(' expressao ')' '{' comando* '}' ;
 forCmd      : 'for' '(' atribuicao? ';' expressao? ';' atribuicao? ')' '{' comando* '}' ;
-expressao
-    : '(' expressao ')'                         #grupo
-    | op='!' expressao                          #unaryNot
-    | op='-' expressao                          #unaryMinus
-    | expressao op=('*' | '/') expressao        #mulDiv
-    | expressao op=('+' | '-') expressao        #addSub
-    | expressao op=('>' | '<') expressao        #relacional
-    | expressao op=('==' | '!=') expressao      #igualdade
-    | chamadaFuncao                             #chamada
-    | ID                                        #idExpr
-    | NUM_INT                                   #intExpr
-    | NUM_REAL                                  #realExpr
-    | STRING                                     #strExpr
-    | 'true'                                     #boolTrue
-    | 'false'                                    #boolFalse
+expressao   : '(' expressao ')' | op='!' expressao | op='-' expressao                          
+    | expressao op=('*' | '/') expressao | expressao op=('+' | '-') expressao        
+    | expressao op=('==' | '!=') expressao | expressao op=('>' | '<') expressao       
+    | chamadaFuncao                            
+    | ID                                      
+    | NUM_INT                                  
+    | NUM_REAL                                 
+    | STRING                                    
+    | 'true'                                    
+    | 'false'                                  
     ;
+
 incremento : ID '++' ';' ;
 decremento : ID '--' ';' ;
 
@@ -61,6 +57,7 @@ ID      : [a-z_][A-Z_0-9]* ;
 NUM_INT : [0-9]+ ;
 NUM_REAL: [0-9]+ '.' [0-9]+ ;
 STRING  : '"' (~["\r\n])* '"' ;
+// string pode aceitar mais de uma linha?
 
-WS      : [ \t\r\n]+ -> skip ;
+// WS      : [ \t\r\n]+ -> skip ;
 COMMENT : '//' ~[\r\n]* -> skip ;
