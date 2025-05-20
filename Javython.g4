@@ -1,7 +1,7 @@
 grammar Javython;
 options { caseInsensitive = true; }
 
-program     : 'program' ':' ID ';' decIds? metodo* main 'end' ;
+program     : 'program' ':' ID ';' decIds metodo* main 'end' ;
 main        : 'main' ':' decIds? comando* ;
 decIds      : 'decIds' ':' (decl ';')+ ;
 
@@ -35,17 +35,17 @@ breakCmd    : 'break' ';' ;
 
 ifCmd       : 'if' '(' expressao ')' '{' comando* '}' ('else' '{' comando* '}')? ;
 whileCmd    : 'while' '(' expressao ')' '{' comando* '}' ;
-forCmd      : 'for' '(' atribuicao? ';' expressao? ';' atribuicao? ')' '{' comando* '}' ;
-expressao   : '(' expressao ')' | op='!' expressao | op='-' expressao                          
-    | expressao op=('*' | '/') expressao | expressao op=('+' | '-') expressao        
-    | expressao op=('==' | '!=') expressao | expressao op=('>' | '<') expressao       
-    | chamadaFuncao                            
-    | ID                                      
-    | NUM_INT                                  
-    | NUM_REAL                                 
-    | STRING                                    
-    | 'true'                                    
-    | 'false'                                  
+forCmd      : 'for' '(' atribuicao?  expressao? ';' (atribuicao | incremento | decremento)? ')' '{' comando* '}' ;
+expressao   : '(' expressao ')' | op='!' expressao | op='-' expressao
+    | expressao op=('*' | '/') expressao | expressao op=('+' | '-') expressao
+    | expressao op=('==' | '!=') expressao | expressao op=('>' | '<') expressao
+    | chamadaFuncao
+    | ID
+    | NUM_INT
+    | NUM_REAL
+    | STRING
+    | 'true'
+    | 'false'
     ;
 
 incremento : ID '++' ';' ;
@@ -59,5 +59,5 @@ NUM_REAL: [0-9]+ '.' [0-9]+ ;
 STRING  : '"' (~["\r\n])* '"' ;
 // string pode aceitar mais de uma linha?
 
-// WS      : [ \t\r\n]+ -> skip ;
+WS : [ \t\r\n]+ -> skip ;
 COMMENT : '//' ~[\r\n]* -> skip ;

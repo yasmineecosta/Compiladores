@@ -1,4 +1,4 @@
-# Generated from Javython.g4 by ANTLR 4.13.2
+# Generated from ./Javython.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
     from .JavythonParser import JavythonParser
@@ -170,129 +170,12 @@ class JavythonListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by JavythonParser#strExpr.
-    def enterStrExpr(self, ctx:JavythonParser.StrExprContext):
+    # Enter a parse tree produced by JavythonParser#expressao.
+    def enterExpressao(self, ctx:JavythonParser.ExpressaoContext):
         pass
 
-    # Exit a parse tree produced by JavythonParser#strExpr.
-    def exitStrExpr(self, ctx:JavythonParser.StrExprContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#intExpr.
-    def enterIntExpr(self, ctx:JavythonParser.IntExprContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#intExpr.
-    def exitIntExpr(self, ctx:JavythonParser.IntExprContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#relacional.
-    def enterRelacional(self, ctx:JavythonParser.RelacionalContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#relacional.
-    def exitRelacional(self, ctx:JavythonParser.RelacionalContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#boolFalse.
-    def enterBoolFalse(self, ctx:JavythonParser.BoolFalseContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#boolFalse.
-    def exitBoolFalse(self, ctx:JavythonParser.BoolFalseContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#chamada.
-    def enterChamada(self, ctx:JavythonParser.ChamadaContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#chamada.
-    def exitChamada(self, ctx:JavythonParser.ChamadaContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#realExpr.
-    def enterRealExpr(self, ctx:JavythonParser.RealExprContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#realExpr.
-    def exitRealExpr(self, ctx:JavythonParser.RealExprContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#grupo.
-    def enterGrupo(self, ctx:JavythonParser.GrupoContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#grupo.
-    def exitGrupo(self, ctx:JavythonParser.GrupoContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#addSub.
-    def enterAddSub(self, ctx:JavythonParser.AddSubContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#addSub.
-    def exitAddSub(self, ctx:JavythonParser.AddSubContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#igualdade.
-    def enterIgualdade(self, ctx:JavythonParser.IgualdadeContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#igualdade.
-    def exitIgualdade(self, ctx:JavythonParser.IgualdadeContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#mulDiv.
-    def enterMulDiv(self, ctx:JavythonParser.MulDivContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#mulDiv.
-    def exitMulDiv(self, ctx:JavythonParser.MulDivContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#boolTrue.
-    def enterBoolTrue(self, ctx:JavythonParser.BoolTrueContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#boolTrue.
-    def exitBoolTrue(self, ctx:JavythonParser.BoolTrueContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#unaryMinus.
-    def enterUnaryMinus(self, ctx:JavythonParser.UnaryMinusContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#unaryMinus.
-    def exitUnaryMinus(self, ctx:JavythonParser.UnaryMinusContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#unaryNot.
-    def enterUnaryNot(self, ctx:JavythonParser.UnaryNotContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#unaryNot.
-    def exitUnaryNot(self, ctx:JavythonParser.UnaryNotContext):
-        pass
-
-
-    # Enter a parse tree produced by JavythonParser#idExpr.
-    def enterIdExpr(self, ctx:JavythonParser.IdExprContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#idExpr.
-    def exitIdExpr(self, ctx:JavythonParser.IdExprContext):
+    # Exit a parse tree produced by JavythonParser#expressao.
+    def exitExpressao(self, ctx:JavythonParser.ExpressaoContext):
         pass
 
 
