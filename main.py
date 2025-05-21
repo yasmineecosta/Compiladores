@@ -5,6 +5,8 @@ from JavythonListener import JavythonListener
 from antlr4.error.ErrorListener import ErrorListener
 import sys
 import json
+import os
+from analisador_semantico import AnalisadorSemantico
 
 
 class MyErrorListener(ErrorListener):
@@ -106,17 +108,39 @@ def main():
         print(tree.toStringTree(recog=parser))
 
         # Construção da AST
-        ast_builder = ASTBuilder()
-        walker = ParseTreeWalker()
-        walker.walk(ast_builder, tree)
-
+        # ast_builder = ASTBuilder()
+        # walker = ParseTreeWalker()
+        # walker.walk(ast_builder, tree)
+        # print("\n\u00c1rvore de Sintaxe Abstrata (AST):")
+        # print_ast(ast_builder.ast)
 
         # print("\nÁrvore de Sintaxe Abstrata (AST):")
         # print(ast_builder.ast)
         # print("\n\u00c1rvore de Sintaxe Abstrata (AST):")
         # print(json.dumps(ast_builder.ast, indent=2, ensure_ascii=False))
-        print("\n\u00c1rvore de Sintaxe Abstrata (AST):")
-        print_ast(ast_builder.ast)
+        
+
+        listener = AnalisadorSemantico(debug=True)
+        walker = ParseTreeWalker()
+        walker.walk(listener, tree)
+
+        # if hasattr(listener, "erros") and listener.erros:
+        #     print("\nErros semânticos encontrados:")
+        #     for erro in listener.erros:
+        #         print(erro)
+        # else:
+        #     print("\n✔️ Nenhum erro semântico encontrado.")
+        print("\nTabela de símbolos:")
+        for nome, tipo in listener.tabela_global.items():
+            print(f"  {nome}: {tipo}")
+
+        if listener.erros:
+            print("\nErros semânticos encontrados:")
+            for erro in listener.erros:
+                print(erro)
+        else:
+            print("\n✔️ Nenhum erro semântico encontrado.")
+
 
     except Exception as e:
         print(f"Erro: {e}")

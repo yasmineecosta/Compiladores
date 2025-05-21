@@ -26,15 +26,15 @@ void mostrarMedia (int v1, int v2){
 main:
     decIds:
         numero : int;
-        n1, n2, i : int;
+        n3, n4, i : int;
 
  print("Programa Fatorial Digite o valor?");
  input(numero);
  print(fatorial(numero));
 
  print("Programa Media Digite os valores?");
- input(n1, n2); // teste comentario
- print(mostrarMedia(n1, n2));
+ input(n3, n4); // teste comentario
+ print(mostrarMedia(n3, n4));
 
  for(i=0; i>0 ; i++){
     print("Teste for.");
