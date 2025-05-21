@@ -1,4 +1,4 @@
-// Generated from c:/Users/Yasmine Martins/Desktop/vsCode/universidade/sexto_periodo/Compiladores/Javython.g4 by ANTLR 4.13.1
+// Generated from C:/Users/Yasmine Martins/Desktop/vsCode/universidade/sexto_periodo/Compiladores/Javython.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -156,6 +156,16 @@ public interface JavythonListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBreakCmd(JavythonParser.BreakCmdContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavythonParser#atribuicaoFor}.
+	 * @param ctx the parse tree
+	 */
+	void enterAtribuicaoFor(JavythonParser.AtribuicaoForContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavythonParser#atribuicaoFor}.
+	 * @param ctx the parse tree
+	 */
+	void exitAtribuicaoFor(JavythonParser.AtribuicaoForContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JavythonParser#ifCmd}.
 	 * @param ctx the parse tree

@@ -1,4 +1,4 @@
-// Generated from c:/Users/Yasmine Martins/Desktop/vsCode/universidade/sexto_periodo/Compiladores/Javython.g4 by ANTLR 4.13.1
+// Generated from C:/Users/Yasmine Martins/Desktop/vsCode/universidade/sexto_periodo/Compiladores/Javython.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class JavythonParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -127,6 +127,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterProgram(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitProgram(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitProgram(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -192,6 +205,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_main; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterMain(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitMain(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitMain(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MainContext main() throws RecognitionException {
@@ -254,6 +280,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_decIds; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterDecIds(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitDecIds(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitDecIds(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DecIdsContext decIds() throws RecognitionException {
@@ -314,6 +353,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_decl; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterDecl(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitDecl(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitDecl(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DeclContext decl() throws RecognitionException {
@@ -351,6 +403,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_idList; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterIdList(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitIdList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitIdList(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final IdListContext idList() throws RecognitionException {
@@ -397,6 +462,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_tipo; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterTipo(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitTipo(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitTipo(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TipoContext tipo() throws RecognitionException {
@@ -454,6 +532,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_metodo; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterMetodo(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitMetodo(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitMetodo(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MetodoContext metodo() throws RecognitionException {
@@ -547,6 +638,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parametros; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterParametros(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitParametros(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitParametros(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ParametrosContext parametros() throws RecognitionException {
@@ -597,6 +701,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parametro; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterParametro(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitParametro(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitParametro(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ParametroContext parametro() throws RecognitionException {
@@ -631,6 +748,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_returnCmd; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterReturnCmd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitReturnCmd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitReturnCmd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ReturnCmdContext returnCmd() throws RecognitionException {
@@ -694,6 +824,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_comando; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterComando(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitComando(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitComando(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ComandoContext comando() throws RecognitionException {
@@ -796,6 +939,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_atribuicao; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterAtribuicao(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitAtribuicao(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitAtribuicao(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AtribuicaoContext atribuicao() throws RecognitionException {
@@ -834,6 +990,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inputCmd; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterInputCmd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitInputCmd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitInputCmd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final InputCmdContext inputCmd() throws RecognitionException {
@@ -877,6 +1046,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_printCmd; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterPrintCmd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitPrintCmd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitPrintCmd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PrintCmdContext printCmd() throws RecognitionException {
@@ -931,6 +1113,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_breakCmd; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterBreakCmd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitBreakCmd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitBreakCmd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final BreakCmdContext breakCmd() throws RecognitionException {
@@ -966,6 +1161,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_atribuicaoFor; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterAtribuicaoFor(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitAtribuicaoFor(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitAtribuicaoFor(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AtribuicaoForContext atribuicaoFor() throws RecognitionException {
@@ -1032,6 +1240,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ifCmd; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterIfCmd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitIfCmd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitIfCmd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final IfCmdContext ifCmd() throws RecognitionException {
@@ -1123,6 +1344,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whileCmd; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterWhileCmd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitWhileCmd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitWhileCmd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final WhileCmdContext whileCmd() throws RecognitionException {
@@ -1192,6 +1426,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_forCmd; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterForCmd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitForCmd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitForCmd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ForCmdContext forCmd() throws RecognitionException {
@@ -1292,6 +1539,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expressao; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterExpressao(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitExpressao(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitExpressao(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressaoContext expressao() throws RecognitionException {
@@ -1505,6 +1765,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_incremento; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterIncremento(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitIncremento(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitIncremento(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final IncrementoContext incremento() throws RecognitionException {
@@ -1539,6 +1812,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_decremento; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterDecremento(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitDecremento(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitDecremento(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DecrementoContext decremento() throws RecognitionException {
@@ -1579,6 +1865,19 @@ public class JavythonParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_chamadaFuncao; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).enterChamadaFuncao(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof JavythonListener ) ((JavythonListener)listener).exitChamadaFuncao(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof JavythonVisitor ) return ((JavythonVisitor<? extends T>)visitor).visitChamadaFuncao(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ChamadaFuncaoContext chamadaFuncao() throws RecognitionException {

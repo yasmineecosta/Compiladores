@@ -32,10 +32,10 @@ atribuicao  : ID '=' expressao ';' ;
 inputCmd    : 'input' '(' idList ')' ';' ;
 printCmd    : 'print' '(' expressao (',' expressao)* ')' ';' ;
 breakCmd    : 'break' ';' ;
-
+atribuicaoFor: ID '=' expressao | ID '++' | ID '--' ;
 ifCmd       : 'if' '(' expressao ')' '{' comando* '}' ('else' '{' comando* '}')? ;
 whileCmd    : 'while' '(' expressao ')' '{' comando* '}' ;
-forCmd      : 'for' '(' atribuicao?  expressao? ';' (atribuicao | incremento | decremento)? ')' '{' comando* '}' ;
+forCmd      : 'for' '(' atribuicaoFor? ';' expressao? ';' atribuicaoFor? ')' '{' comando* '}' ;
 expressao   : '(' expressao ')' | op='!' expressao | op='-' expressao
     | expressao op=('*' | '/') expressao | expressao op=('+' | '-') expressao
     | expressao op=('==' | '!=') expressao | expressao op=('>' | '<') expressao
