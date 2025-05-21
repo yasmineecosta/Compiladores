@@ -1,17 +1,80 @@
 from antlr4 import *
 from JavythonLexer import JavythonLexer
 from JavythonParser import JavythonParser
+from JavythonListener import JavythonListener
 from antlr4.error.ErrorListener import ErrorListener
 import sys
-
-
-# from AcoesSemanticas import AcoesSemanticas
+import json
 
 
 class MyErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         print(f"Erro de sintaxe na linha {line}, coluna {column}: {msg}")
         raise Exception(f"Erro de sintaxe: {msg}")
+
+
+class ASTBuilder(JavythonListener):
+    def __init__(self):
+        self.ast = {"type": "Program", "children": []}
+        self.stack = [self.ast]  # pilha para navegar entre nós
+
+    def current_node(self):
+        return self.stack[-1]
+
+    def enterProgram(self, ctx):
+        pass  # já criado no __init__
+
+    def enterMain(self, ctx):
+        main_node = {"type": "Main", "children": []}
+        self.current_node()["children"].append(main_node)
+        self.stack.append(main_node)
+
+    def exitMain(self, ctx):
+        self.stack.pop()
+
+    def enterMetodo(self, ctx):
+        tipo = ctx.tipo().getText() if ctx.tipo() else "void"
+        nome = ctx.ID().getText()
+        metodo_node = {"type": "Method", "name": nome, "returnType": tipo, "children": []}
+        self.current_node()["children"].append(metodo_node)
+        self.stack.append(metodo_node)
+
+    def exitMetodo(self, ctx):
+        self.stack.pop()
+
+    def enterDecl(self, ctx):
+        texto = ctx.getText()
+        decl_node = {"type": "Declaration", "text": texto}
+        self.current_node()["children"].append(decl_node)
+
+    def enterComando(self, ctx):
+        texto = ctx.getText().replace("\n", " ").replace(" ", "").strip()
+        comando_node = {"type": "Command", "text": texto}
+        self.current_node()["children"].append(comando_node)
+
+    def exitProgram(self, ctx):
+        while len(self.stack) > 1:
+            self.stack.pop()
+
+def print_ast(node, indent=0):
+    spacing = "  " * indent
+    if isinstance(node, dict):
+        node_type = node.get("type", "<unknown>")
+        print(f"{spacing}{node_type}:")
+        for key, value in node.items():
+            if key == "type":
+                continue
+            if isinstance(value, list):
+                print(f"{spacing}  {key}:")
+                for child in value:
+                    print_ast(child, indent + 2)
+            elif isinstance(value, dict):
+                print(f"{spacing}  {key}:")
+                print_ast(value, indent + 2)
+            else:
+                print(f"{spacing}  {key}: {value}")
+    else:
+        print(f"{spacing}{node}")
 
 
 def main():
@@ -39,9 +102,22 @@ def main():
         parser.addErrorListener(MyErrorListener())
 
         tree = parser.program()
-        print("Árvore de análise sintática:")
+        print("\nÁrvore de análise sintática:")
         print(tree.toStringTree(recog=parser))
-    
+
+        # Construção da AST
+        ast_builder = ASTBuilder()
+        walker = ParseTreeWalker()
+        walker.walk(ast_builder, tree)
+
+
+        # print("\nÁrvore de Sintaxe Abstrata (AST):")
+        # print(ast_builder.ast)
+        # print("\n\u00c1rvore de Sintaxe Abstrata (AST):")
+        # print(json.dumps(ast_builder.ast, indent=2, ensure_ascii=False))
+        print("\n\u00c1rvore de Sintaxe Abstrata (AST):")
+        print_ast(ast_builder.ast)
+
     except Exception as e:
         print(f"Erro: {e}")
         sys.exit(1)
