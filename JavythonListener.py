@@ -1,4 +1,4 @@
-# Generated from ./Javython.g4 by ANTLR 4.13.2
+# Generated from Javython.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
     from .JavythonParser import JavythonParser
@@ -140,6 +140,15 @@ class JavythonListener(ParseTreeListener):
 
     # Exit a parse tree produced by JavythonParser#breakCmd.
     def exitBreakCmd(self, ctx:JavythonParser.BreakCmdContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#atribuicaoFor.
+    def enterAtribuicaoFor(self, ctx:JavythonParser.AtribuicaoForContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#atribuicaoFor.
+    def exitAtribuicaoFor(self, ctx:JavythonParser.AtribuicaoForContext):
         pass
 
 
