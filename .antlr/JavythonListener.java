@@ -1,4 +1,4 @@
-// Generated from c:/Users/Yasmine Martins/Desktop/vsCode/universidade/sexto_periodo/Compiladores/Javython.g4 by ANTLR 4.13.1
+// Generated from c:/Users/KM/Documents/Compilas/Compiladores/Javython.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -187,173 +187,15 @@ public interface JavythonListener extends ParseTreeListener {
 	 */
 	void exitForCmd(JavythonParser.ForCmdContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code strExpr}
-	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * Enter a parse tree produced by {@link JavythonParser#expressao}.
 	 * @param ctx the parse tree
 	 */
-	void enterStrExpr(JavythonParser.StrExprContext ctx);
+	void enterExpressao(JavythonParser.ExpressaoContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code strExpr}
-	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * Exit a parse tree produced by {@link JavythonParser#expressao}.
 	 * @param ctx the parse tree
 	 */
-	void exitStrExpr(JavythonParser.StrExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code intExpr}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterIntExpr(JavythonParser.IntExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code intExpr}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitIntExpr(JavythonParser.IntExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code relacional}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterRelacional(JavythonParser.RelacionalContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code relacional}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitRelacional(JavythonParser.RelacionalContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code boolFalse}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterBoolFalse(JavythonParser.BoolFalseContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code boolFalse}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitBoolFalse(JavythonParser.BoolFalseContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code chamada}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterChamada(JavythonParser.ChamadaContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code chamada}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitChamada(JavythonParser.ChamadaContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code realExpr}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterRealExpr(JavythonParser.RealExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code realExpr}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitRealExpr(JavythonParser.RealExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code grupo}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterGrupo(JavythonParser.GrupoContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code grupo}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitGrupo(JavythonParser.GrupoContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code addSub}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterAddSub(JavythonParser.AddSubContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code addSub}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitAddSub(JavythonParser.AddSubContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code igualdade}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterIgualdade(JavythonParser.IgualdadeContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code igualdade}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitIgualdade(JavythonParser.IgualdadeContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code mulDiv}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterMulDiv(JavythonParser.MulDivContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code mulDiv}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitMulDiv(JavythonParser.MulDivContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code boolTrue}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterBoolTrue(JavythonParser.BoolTrueContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code boolTrue}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitBoolTrue(JavythonParser.BoolTrueContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code unaryMinus}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterUnaryMinus(JavythonParser.UnaryMinusContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code unaryMinus}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitUnaryMinus(JavythonParser.UnaryMinusContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code unaryNot}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterUnaryNot(JavythonParser.UnaryNotContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code unaryNot}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitUnaryNot(JavythonParser.UnaryNotContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code idExpr}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterIdExpr(JavythonParser.IdExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code idExpr}
-	 * labeled alternative in {@link JavythonParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitIdExpr(JavythonParser.IdExprContext ctx);
+	void exitExpressao(JavythonParser.ExpressaoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JavythonParser#incremento}.
 	 * @param ctx the parse tree
