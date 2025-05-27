@@ -1,7 +1,7 @@
 # Generated from Javython.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
-    from .JavythonParser import JavythonParser
+    from JavythonParser import JavythonParser
 else:
     from JavythonParser import JavythonParser
 

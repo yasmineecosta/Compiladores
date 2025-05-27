@@ -16,5 +16,5 @@ def main(file_path):
 
 if __name__ == "__main__":
     import sys
-    main(sys.argv[1])  # python main.py .\teste.txt -> Terminal
+    main(sys.argv[1])  # python main.py .\teste1.txt -> Terminal
     print("\n")

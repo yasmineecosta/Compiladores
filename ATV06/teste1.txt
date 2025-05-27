@@ -1,0 +1,4 @@
+number x;
+number y;
+number z;
+result = x + y * z;
