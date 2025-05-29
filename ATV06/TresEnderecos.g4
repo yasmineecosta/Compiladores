@@ -4,18 +4,8 @@ grammar TresEnderecos;
 
 program : instrucoes* EOF ;
 
-NUMBER : 'number' ;
-SEMI : ';' ;
-EQUAL : '=' ;
-MUL : '*' ;
-DIV : '/' ;
-ADD : '+' ;
-SUB : '-' ;
-LPAREN : '(' ;
-RPAREN : ')' ;
-
 instrucoes : declaracaoVariavel
-         | atribuicao;
+           | atribuicao;
 
 declaracaoVariavel : 'number' ID ';' ;
 
@@ -30,6 +20,17 @@ expr: expr op=('*'|'/') expr     # MulDiv
     ;
 
 // Regras lexer (tokens)
+
+
+NUMBER : 'number' ;
+SEMI : ';' ;
+EQUAL : '=' ;
+MUL : '*' ;
+DIV : '/' ;
+ADD : '+' ;
+SUB : '-' ;
+LPAREN : '(' ;
+RPAREN : ')' ;
 
 ID      : [a-zA-Z_][a-zA-Z_0-9]* ;
 INT     : [0-9]+ ;
