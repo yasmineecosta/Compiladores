@@ -1,5 +1,5 @@
 program: Exemplo1; //Exemplo 01 da Documentação
-decIDs:
+decIds:
     i : int;
 
 int fatorial (int fat){
@@ -16,6 +16,7 @@ void mostrarMedia (int v1, int v2){
          y : int;
      x = (v1+v2)/2;
      print ("Resultado: ", x);
+
     }
     real media (real n1, real n2){
     decIds: // teste comentario
@@ -36,7 +37,7 @@ main:
  input(n1, n2); // teste comentario
  print(mostrarMedia(n1, n2));
 
- for(i=0; i == 0 ; i++){
+ for(i=0; i == 0 ;i++){
     print("Teste for.");
  }
 

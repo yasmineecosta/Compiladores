@@ -1,7 +1,7 @@
 # Generated from Javython.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
-    from JavythonParser import JavythonParser
+    from .JavythonParser import JavythonParser
 else:
     from JavythonParser import JavythonParser
 
@@ -143,15 +143,6 @@ class JavythonListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by JavythonParser#atribuicaoFor.
-    def enterAtribuicaoFor(self, ctx:JavythonParser.AtribuicaoForContext):
-        pass
-
-    # Exit a parse tree produced by JavythonParser#atribuicaoFor.
-    def exitAtribuicaoFor(self, ctx:JavythonParser.AtribuicaoForContext):
-        pass
-
-
     # Enter a parse tree produced by JavythonParser#ifCmd.
     def enterIfCmd(self, ctx:JavythonParser.IfCmdContext):
         pass
@@ -179,12 +170,120 @@ class JavythonListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by JavythonParser#expressao.
-    def enterExpressao(self, ctx:JavythonParser.ExpressaoContext):
+    # Enter a parse tree produced by JavythonParser#atribuicaoFor.
+    def enterAtribuicaoFor(self, ctx:JavythonParser.AtribuicaoForContext):
         pass
 
-    # Exit a parse tree produced by JavythonParser#expressao.
-    def exitExpressao(self, ctx:JavythonParser.ExpressaoContext):
+    # Exit a parse tree produced by JavythonParser#atribuicaoFor.
+    def exitAtribuicaoFor(self, ctx:JavythonParser.AtribuicaoForContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#incDecFor.
+    def enterIncDecFor(self, ctx:JavythonParser.IncDecForContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#incDecFor.
+    def exitIncDecFor(self, ctx:JavythonParser.IncDecForContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#RealAtom.
+    def enterRealAtom(self, ctx:JavythonParser.RealAtomContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#RealAtom.
+    def exitRealAtom(self, ctx:JavythonParser.RealAtomContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#MulDivExpr.
+    def enterMulDivExpr(self, ctx:JavythonParser.MulDivExprContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#MulDivExpr.
+    def exitMulDivExpr(self, ctx:JavythonParser.MulDivExprContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#StringAtom.
+    def enterStringAtom(self, ctx:JavythonParser.StringAtomContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#StringAtom.
+    def exitStringAtom(self, ctx:JavythonParser.StringAtomContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#BoolAtom.
+    def enterBoolAtom(self, ctx:JavythonParser.BoolAtomContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#BoolAtom.
+    def exitBoolAtom(self, ctx:JavythonParser.BoolAtomContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#ParensExpr.
+    def enterParensExpr(self, ctx:JavythonParser.ParensExprContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#ParensExpr.
+    def exitParensExpr(self, ctx:JavythonParser.ParensExprContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#CompExpr.
+    def enterCompExpr(self, ctx:JavythonParser.CompExprContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#CompExpr.
+    def exitCompExpr(self, ctx:JavythonParser.CompExprContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#UnaryExpr.
+    def enterUnaryExpr(self, ctx:JavythonParser.UnaryExprContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#UnaryExpr.
+    def exitUnaryExpr(self, ctx:JavythonParser.UnaryExprContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#IntAtom.
+    def enterIntAtom(self, ctx:JavythonParser.IntAtomContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#IntAtom.
+    def exitIntAtom(self, ctx:JavythonParser.IntAtomContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#AddSubExpr.
+    def enterAddSubExpr(self, ctx:JavythonParser.AddSubExprContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#AddSubExpr.
+    def exitAddSubExpr(self, ctx:JavythonParser.AddSubExprContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#IdAtom.
+    def enterIdAtom(self, ctx:JavythonParser.IdAtomContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#IdAtom.
+    def exitIdAtom(self, ctx:JavythonParser.IdAtomContext):
+        pass
+
+
+    # Enter a parse tree produced by JavythonParser#FuncCallExpr.
+    def enterFuncCallExpr(self, ctx:JavythonParser.FuncCallExprContext):
+        pass
+
+    # Exit a parse tree produced by JavythonParser#FuncCallExpr.
+    def exitFuncCallExpr(self, ctx:JavythonParser.FuncCallExprContext):
         pass
 
 

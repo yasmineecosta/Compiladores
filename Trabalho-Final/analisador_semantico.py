@@ -1,296 +1,159 @@
-from antlr4 import *
+# Trabalho-Final/analisador_semantico.py (Versão 100% Completa)
+
+from JavythonParser import JavythonParser
 from JavythonListener import JavythonListener
-from tabela_simbolos import TabelaSimbolos
+from JavythonVisitor import JavythonVisitor
+from tabela_simbolos import TabelaSimbolos, Simbolo
 
-PALAVRAS_RESERVADAS = {
-            'if', 'else', 'while', 'for', 'break', 'input', 'print', 'program', 'main', 'end', 'return',
-            'int', 'real', 'str', 'bool', 'void', 'decIds'
-        }  
+
+# ===================================================================
+# Visitor dedicado a determinar o tipo de qualquer nó de expressão.
+# ===================================================================
+class ExpressionTypeVisitor(JavythonVisitor):
+    def __init__(self, tabela: TabelaSimbolos, erros: list):
+        self.tabela = tabela
+        self.erros = erros
+
+    def reportar_erro(self, linha, mensagem):
+        erro_msg = f"Linha {linha}: {mensagem}"
+        if erro_msg not in self.erros:
+            self.erros.append(erro_msg)
+
+    # --- Átomos (folhas da árvore de expressão) ---
+    def visitIdAtom(self, ctx: JavythonParser.IdAtomContext):
+        nome_var = ctx.ID().getText()
+        simbolo = self.tabela.buscar(nome_var)
+        if not simbolo:
+            self.reportar_erro(ctx.start.line, f"Variável ou função '{nome_var}' não declarada.")
+            return "indefinido"
+        return simbolo.tipo
+
+    def visitIntAtom(self, ctx: JavythonParser.IntAtomContext):
+        return "int"
+
+    def visitRealAtom(self, ctx: JavythonParser.RealAtomContext):
+        return "real"
+
+    def visitStringAtom(self, ctx: JavythonParser.StringAtomContext):
+        return "str"
+
+    def visitBoolAtom(self, ctx: JavythonParser.BoolAtomContext):
+        return "bool"
+
+    def visitFuncCallExpr(self, ctx: JavythonParser.FuncCallExprContext):
+        nome_func = ctx.chamadaFuncao().ID().getText()
+        simbolo = self.tabela.buscar(nome_func)
+        if not simbolo or simbolo.categoria != 'metodo':
+            self.reportar_erro(ctx.start.line, f"Função '{nome_func}' não declarada.")
+            return "indefinido"
+        return simbolo.tipo
+
+    # --- Expressões Compostas ---
+    def visitCompExpr(self, ctx: JavythonParser.CompExprContext):
+        tipo_esq = self.visit(ctx.expressao(0))
+        tipo_dir = self.visit(ctx.expressao(1))
+        if tipo_esq != tipo_dir and not (tipo_esq in ["int", "real"] and tipo_dir in ["int", "real"]):
+            self.reportar_erro(ctx.start.line, f"Comparação entre tipos incompatíveis: '{tipo_esq}' e '{tipo_dir}'.")
+        return "bool"
+
+    def visitAddSubExpr(self, ctx: JavythonParser.AddSubExprContext):
+        tipo_esq = self.visit(ctx.expressao(0))
+        tipo_dir = self.visit(ctx.expressao(1))
+        if "indefinido" in [tipo_esq, tipo_dir]: return "indefinido"
+        if tipo_esq not in ["int", "real"] or tipo_dir not in ["int", "real"]:
+            self.reportar_erro(ctx.start.line,
+                               f"Operação aritmética inválida para os tipos '{tipo_esq}' e '{tipo_dir}'.")
+            return "indefinido"
+        return "real" if tipo_esq == "real" or tipo_dir == "real" else "int"
+
+    def visitMulDivExpr(self, ctx: JavythonParser.MulDivExprContext):
+        return self.visitAddSubExpr(ctx)
+
+    def visitUnaryExpr(self, ctx: JavythonParser.UnaryExprContext):
+        return self.visit(ctx.expressao())
+
+    def visitParensExpr(self, ctx: JavythonParser.ParensExprContext):
+        return self.visit(ctx.expressao())
+
+
+# ===================================================================
+# Listener principal para gerenciamento de escopo e regras semânticas
+# ===================================================================
 class AnalisadorSemantico(JavythonListener):
-    def __init__(self, debug=False):
-        self.debug = debug
-        self.tabela_global = {}  # usa classe modular
+    def __init__(self):
+        """
+        Este é o construtor que estava em falta. Ele inicializa
+        a tabela de símbolos e a lista de erros.
+        """
+        self.tabela = TabelaSimbolos()
         self.erros = []
-        # Simula tipos de variáveis (tudo lowercase por insensibilidade a maiúsculas)
-        
-        self.tabela_simbolos = {
-            "a": "int",
-            "b": "real",
-            "c": "bool",
-            "d": "string",
-            "i": "int",
-            "r": "real",
-            "s": "string"
-        }
+        self.expression_visitor = ExpressionTypeVisitor(self.tabela, self.erros)
 
-    def reportaErro(self, msg):
-        # print("[Erro semântico] " + msg)
-        # self.erros.append(msg)
-        self.erros.append(f"[Erro semântico] {msg}")
-        if self.debug:
-            print("[Erro semântico] " + msg)
+        # Adiciona funções nativas ao escopo global
+        self.tabela.declarar(Simbolo(nome='input', tipo='void', categoria='metodo'))
+        self.tabela.declarar(Simbolo(nome='print', tipo='void', categoria='metodo'))
 
-    # Expressões
-    def exitAddSub(self, ctx):
-        self.validaBinario(ctx, ["int", "real", "string"], "add/sub")
+    def reportar_erro(self, linha, mensagem):
+        erro_msg = f"Linha {linha}: {mensagem}"
+        if erro_msg not in self.erros:
+            self.erros.append(erro_msg)
 
-    def exitMulDiv(self, ctx):
-        self.validaBinario(ctx, ["int", "real"], "mul/div")
+    def enterMetodo(self, ctx: JavythonParser.MetodoContext):
+        nome = ctx.ID().getText()
+        tipo_retorno = ctx.tipo().getText()
+        linha = ctx.ID().getSymbol().line
 
-    def exitRelacional(self, ctx):
-        self.validaBinario(ctx, ["int", "real", "bool", "string"], "relacional")
+        simbolo_metodo = Simbolo(nome=nome, tipo=tipo_retorno, categoria='metodo', linha=linha)
+        if not self.tabela.declarar(simbolo_metodo):
+            self.reportar_erro(linha, f"Identificador '{nome}' já declarado no escopo global.")
 
-    def exitIgualdade(self, ctx):
-        self.validaBinario(ctx, ["int", "real", "bool", "string"], "igualdade")
-
-    def exitUnaryNot(self, ctx):
-        tipo = self.inferirTipo(ctx.expressao())
-        if tipo != "bool":
-            self.reportaErro(f"'!' requer tipo bool, mas foi usado '{tipo}'")
-
-    def exitUnaryMinus(self, ctx):
-        tipo = self.inferirTipo(ctx.expressao())
-        if tipo not in ["int", "real"]:
-            self.reportaErro(f"'-' requer tipo int ou real, mas foi usado '{tipo}'")
-
-    # ++ e --
-    def exitIncremento(self, ctx):
-        var = ctx.ID().getText().lower()
-        tipo = self.tabela_simbolos.get(var, "desconhecido")
-        if tipo != "int":
-            self.reportaErro(f"'++' requer tipo int, mas '{var}' é do tipo {tipo}")
-
-    def exitDecremento(self, ctx):
-        var = ctx.ID().getText().lower()
-        tipo = self.tabela_simbolos.get(var, "desconhecido")
-        if tipo != "int":
-            self.reportaErro(f"'--' requer tipo int, mas '{var}' é do tipo {tipo}")
-
-    # Auxiliares
-    def validaBinario(self, ctx, tiposAceitos, nomeOperador):
-        tipo_esq = self.inferirTipo(ctx.expressao(0))
-        tipo_dir = self.inferirTipo(ctx.expressao(1))
-        if tipo_esq != tipo_dir:
-            self.reportaErro(f"Tipos incompatíveis em '{nomeOperador}': {tipo_esq} e {tipo_dir}")
-        elif tipo_esq not in tiposAceitos:
-            self.reportaErro(f"Tipo inválido em '{nomeOperador}': {tipo_esq}")
-
-    def inferirTipo(self, ctx):
-        if ctx.ID():
-            nome = ctx.ID().getText().lower()
-            return self.tabela_simbolos.get(nome, "desconhecido")
-        elif ctx.NUM_INT():
-            return "int"
-        elif ctx.NUM_REAL():
-            return "real"
-        elif ctx.STRING():
-            return "string"
-        elif ctx.getText().lower() in ["true", "false"]:
-            return "bool"
-        elif ctx.expressao():
-            return self.inferirTipo(ctx.expressao(0))
-        return "desconhecido"
-
-    def nome_invalido(self, nome):
-        return nome.lower() in PALAVRAS_RESERVADAS or nome.lower() in self.tabela_global
-    
-    def enterDecl(self, ctx):
-        tipo = ctx.tipo().getText()
-        if tipo == "void":
-            self.reportaErro
-            ("Variável não pode ser declarada com tipo 'void'.")
-            return
-        for id_ctx in ctx.idList().ID():
-            nome = id_ctx.getText().lower()
-            if self.nome_invalido(nome):
-                self.reportaErro
-                (f"Nome inválido ou já utilizado: '{nome}'")
-            else:
-                self.tabela_global[nome] = f"variável ({tipo})"
-
-    def enterMetodo(self, ctx):
-        tipo = ctx.tipo().getText()
-        nome = ctx.ID().getText().lower()
-        if self.nome_invalido(nome):
-            self.reportaErro
-            (f"Nome de método inválido ou já utilizado: '{nome}'")
-        else:
-            self.tabela_global[nome] = f"método ({tipo})"
+        self.tabela.entrar_escopo()
 
         if ctx.parametros():
-            for p in ctx.parametros().parametro():
-                nome_param = p.ID().getText().lower()
-                tipo_param = p.tipo().getText()
-                if tipo_param == "void":
-                    self.reportaErro
-                    (f"Parâmetro '{nome_param}' não pode ser do tipo 'void'.")
-                if self.nome_invalido(nome_param):
-                    self.reportaErro
-                    (f"Nome de parâmetro inválido ou já utilizado: '{nome_param}'")
-                else:
-                    self.tabela_global[nome_param] = f"parâmetro ({tipo_param})"
+            for param_ctx in ctx.parametros().parametro():
+                nome_param = param_ctx.ID().getText()
+                tipo_param = param_ctx.tipo().getText()
+                linha_param = param_ctx.ID().getSymbol().line
+                simbolo_param = Simbolo(nome=nome_param, tipo=tipo_param, categoria='parametro', linha=linha_param)
+                if not self.tabela.declarar(simbolo_param):
+                    self.reportar_erro(linha_param, f"Parâmetro '{nome_param}' já foi declarado neste escopo.")
 
-    
+    def exitMetodo(self, ctx: JavythonParser.MetodoContext):
+        self.tabela.sair_escopo()
 
-    # def __init__(self):
-    #     self.tabela = TabelaSimbolos()  # usa classe modular
-    #     self.metodos = {}
-    #     self.escopo_atual = "global"
-    #     self.erros = []
-    #     self.declaracoes_encerradas = False
+    def enterMain(self, ctx: JavythonParser.MainContext):
+        self.tabela.entrar_escopo("main")
 
-    # def reportaErro
-    # (self, msg):
-    #     self.erros.append("[Erro semântico] " + msg)
+    def exitMain(self, ctx: JavythonParser.MainContext):
+        self.tabela.sair_escopo()
 
-    # def enterMain(self, ctx):
-    #     self.tabela.entrar_escopo()
-    #     self.declaracoes_encerradas = False
-    #     self.escopo_atual = "main"
+    def exitDecl(self, ctx: JavythonParser.DeclContext):
+        tipo = ctx.tipo().getText()
+        for id_node in ctx.idList().ID():
+            nome_var = id_node.getText()
+            linha = id_node.getSymbol().line
+            simbolo = Simbolo(nome=nome_var, tipo=tipo, categoria='variavel', linha=linha)
+            if not self.tabela.declarar(simbolo):
+                self.reportar_erro(linha, f"Variável '{nome_var}' já foi declarada.")
 
-    # def exitMain(self, ctx):
-    #     self.tabela.sair_escopo()
-    #     self.escopo_atual = "global"
+    def exitAtribuicao(self, ctx: JavythonParser.AtribuicaoContext):
+        nome_var = ctx.ID().getText()
+        linha = ctx.ID().getSymbol().line
+        simbolo = self.tabela.buscar(nome_var)
+        if not simbolo:
+            self.reportar_erro(linha, f"Variável '{nome_var}' não declarada.")
+            return
 
-    # def enterMetodo(self, ctx):
-    #     nome = ctx.ID().getText()
-    #     tipo = ctx.tipo().getText() if ctx.tipo() else "void"
-    #     if nome in self.metodos or self.tabela.existe_em_escopo_atual(nome):
-    #         self.reportaErro
-    # (f"Método '{nome}' já declarado.")
-    #     self.metodos[nome] = {
-    #         "tipo": tipo,
-    #         "params": [],
-    #     }
-    #     self.tabela.entrar_escopo()
-    #     self.escopo_atual = nome
-    #     if ctx.parametros():
-    #         for p in ctx.parametros().parametro():
-    #             tipo_param = p.tipo().getText()
-    #             nome_param = p.ID().getText()
-    #             if not self.tabela.declarar(nome_param, tipo_param):
-    #                 self.reportaErro
-    # (f"Parâmetro '{nome_param}' já declarado.")
-    #             self.metodos[nome]["params"].append(tipo_param)
+        tipo_expr = self.expression_visitor.visit(ctx.expressao())
+        if tipo_expr == "indefinido": return
 
-    # def exitMetodo(self, ctx):
-    #     self.tabela.sair_escopo()
-    #     self.escopo_atual = "global"
+        tipos_compativeis = (simbolo.tipo == tipo_expr) or (simbolo.tipo == "real" and tipo_expr == "int")
+        if not tipos_compativeis:
+            self.reportar_erro(linha,
+                               f"Atribuição de tipo incompatível para '{nome_var}'. Esperado '{simbolo.tipo}', mas recebeu '{tipo_expr}'.")
 
-    # def enterDecl(self, ctx):
-    #     if self.declaracoes_encerradas:
-    #         self.reportaErro
-    # ("Declaração após comandos não é permitida.")
-    #     tipo = ctx.tipo().getText()
-    #     for id_ctx in ctx.idList().ID():
-    #         nome = id_ctx.getText()
-    #         if not self.tabela.declarar(nome, tipo):
-    #             self.reportaErro
-    # (f"Variável '{nome}' já declarada no escopo atual.")
-    #         elif nome in self.metodos:
-    #             self.reportaErro
-    # (f"Nome '{nome}' já utilizado por um método.")
-
-    # # def enterComando(self, ctx):
-    # #     self.declaracoes_encerradas = True
-    # def enterComando(self, ctx):
-    #     if self.escopo_atual in ["main"] or self.escopo_atual in self.metodos:
-    #         self.declaracoes_encerradas = True
-
-    # def enterChamadaFuncao(self, ctx):
-    #     nome = ctx.ID().getText()
-    #     if nome not in self.metodos:
-    #         self.reportaErro
-    # (f"Chamada a função '{nome}' não declarada.")
-    #     else:
-    #         esperado = len(self.metodos[nome]["params"])
-    #         fornecido = len(ctx.expressao())
-    #         if esperado != fornecido:
-    #             self.reportaErro
-    # (f"Função '{nome}' espera {esperado} argumento(s), mas recebeu {fornecido}.")
-
-
-
-
-
-
-
-# class sintatic(JavythonListener):
-#     def __init__(self):
-#         # Simula tipos de variáveis (tudo lowercase por insensibilidade a maiúsculas)
-#         self.tabela_simbolos = {
-#             "a": "int",
-#             "b": "real",
-#             "c": "bool",
-#             "d": "string",
-#             "i": "int",
-#             "r": "real",
-#             "s": "string"
-#         }
-#         self.erros = []
-
-#     def reportaErro(self, msg):
-#         print("[Erro semântico] " + msg)
-#         self.erros.append(msg)
-
-#     # Expressões
-#     def exitAddSub(self, ctx):
-#         self.validaBinario(ctx, ["int", "real", "string"], "add/sub")
-
-#     def exitMulDiv(self, ctx):
-#         self.validaBinario(ctx, ["int", "real"], "mul/div")
-
-#     def exitRelacional(self, ctx):
-#         self.validaBinario(ctx, ["int", "real", "bool", "string"], "relacional")
-
-#     def exitIgualdade(self, ctx):
-#         self.validaBinario(ctx, ["int", "real", "bool", "string"], "igualdade")
-
-#     def exitUnaryNot(self, ctx):
-#         tipo = self.inferirTipo(ctx.expressao())
-#         if tipo != "bool":
-#             self.reportaErro(f"'!' requer tipo bool, mas foi usado '{tipo}'")
-
-#     def exitUnaryMinus(self, ctx):
-#         tipo = self.inferirTipo(ctx.expressao())
-#         if tipo not in ["int", "real"]:
-#             self.reportaErro(f"'-' requer tipo int ou real, mas foi usado '{tipo}'")
-
-#     # ++ e --
-#     def exitIncremento(self, ctx):
-#         var = ctx.ID().getText().lower()
-#         tipo = self.tabela_simbolos.get(var, "desconhecido")
-#         if tipo != "int":
-#             self.reportaErro(f"'++' requer tipo int, mas '{var}' é do tipo {tipo}")
-
-#     def exitDecremento(self, ctx):
-#         var = ctx.ID().getText().lower()
-#         tipo = self.tabela_simbolos.get(var, "desconhecido")
-#         if tipo != "int":
-#             self.reportaErro(f"'--' requer tipo int, mas '{var}' é do tipo {tipo}")
-
-#     # Auxiliares
-#     def validaBinario(self, ctx, tiposAceitos, nomeOperador):
-#         tipo_esq = self.inferirTipo(ctx.expressao(0))
-#         tipo_dir = self.inferirTipo(ctx.expressao(1))
-#         if tipo_esq != tipo_dir:
-#             self.reportaErro(f"Tipos incompatíveis em '{nomeOperador}': {tipo_esq} e {tipo_dir}")
-#         elif tipo_esq not in tiposAceitos:
-#             self.reportaErro(f"Tipo inválido em '{nomeOperador}': {tipo_esq}")
-
-#     def inferirTipo(self, ctx):
-#         if ctx.ID():
-#             nome = ctx.ID().getText().lower()
-#             return self.tabela_simbolos.get(nome, "desconhecido")
-#         elif ctx.NUM_INT():
-#             return "int"
-#         elif ctx.NUM_REAL():
-#             return "real"
-#         elif ctx.STRING():
-#             return "string"
-#         elif ctx.getText().lower() in ["true", "false"]:
-#             return "bool"
-#         elif ctx.expressao():
-#             return self.inferirTipo(ctx.expressao(0))
-#         return "desconhecido"
-
+    def exitIfCmd(self, ctx: JavythonParser.IfCmdContext):
+        tipo_teste = self.expression_visitor.visit(ctx.expressao())
+        if tipo_teste != "bool" and tipo_teste != "indefinido":
+            self.reportar_erro(ctx.expressao().start.line,
+                               f"A condição do 'if' deve ser booleana, mas é do tipo '{tipo_teste}'.")
