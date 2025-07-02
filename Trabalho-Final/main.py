@@ -8,7 +8,7 @@ from JavythonLexer import JavythonLexer
 from JavythonParser import JavythonParser
 from ast_listener import ASTListener
 from analisador_semantico import AnalisadorSemantico
-
+from tac_generator import TACGenerator # Novo import
 
 def print_section_header(title):
     """ Imprime um cabeçalho padronizado para a apresentação. """
@@ -108,6 +108,13 @@ def main():
             ast_string = ast_builder.get_ast_string(tree)
             # Limpa múltiplos espaços para uma melhor visualização
             print(' '.join(ast_string.split()))
+
+            # --- Geração do Código de Três Endereços (TAC) ---
+            print("\n--- Código de Três Endereços (TAC) ---")
+            tac_generator = TACGenerator(analisador_semantico.tabela)
+            tac_instructions = tac_generator.visit(tree)
+            for instr in tac_instructions:
+                print(instr)
 
     except FileNotFoundError:
         print(f"\nERRO: O arquivo '{input_file}' não foi encontrado.")

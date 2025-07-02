@@ -1,4 +1,4 @@
-rogram: ProgramaCompleto;
+program: ProgramaCompleto;
 
 decIds:
   // PI = 3.14;
@@ -48,7 +48,7 @@ decIds:
   // Fatorial
   print("Digite um número para fatorial:");
   input(valor);
-  resultadoFat = fatorial(valorp");
+  resultadoFat = fatorial(valor);
   print("Fatorial de", valor, "é:", resultadoFat);
 
   // Média
