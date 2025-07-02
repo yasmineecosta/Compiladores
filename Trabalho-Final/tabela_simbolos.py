@@ -1,21 +1,24 @@
-# Trabalho-Final/tabela_simbolos.py (Versão Corrigida com Escopos Aninhados)
+# Trabalho-Final/tabela_simbolos.py (Refatorado com Suporte a Parâmetros de Métodos)
 
 class Simbolo:
-    """ Representa uma entrada na tabela (variável, método, etc.). """
-
-    def __init__(self, nome, tipo, categoria='variavel', linha=0):
+    """ Representa uma entrada na tabela de símbolos (variável, método, parâmetro). """
+    def __init__(self, nome, tipo, categoria='variavel', linha=0, parametros=None):
         self.nome = nome
         self.tipo = tipo
-        self.categoria = categoria
+        self.categoria = categoria  # variavel, metodo ou parametro
         self.linha = linha
+        self.parametros = parametros or []  # Somente para métodos
 
     def __str__(self):
-        return f"{self.nome} -> (Categoria: {self.categoria}, Tipo: {self.tipo}, Linha: {self.linha})"
+        base = f"{self.nome} -> (Categoria: {self.categoria}, Tipo: {self.tipo}, Linha: {self.linha})"
+        if self.parametros:
+            params_str = ', '.join([f"{tipo} {nome}" for tipo, nome in self.parametros])
+            base += f", Parâmetros: ({params_str})"
+        return base
 
 
 class Escopo:
-    """ Representa um único escopo com seus símbolos e escopos filhos. """
-
+    """ Representa um escopo com símbolos declarados e possíveis escopos filhos. """
     def __init__(self, pai=None, nome="global"):
         self.simbolos = {}
         self.pai = pai
@@ -42,18 +45,15 @@ class Escopo:
 
 
 class TabelaSimbolos:
-    """ Gerencia a árvore de escopos para a análise semântica. """
-
+    """ Gerencia a hierarquia de escopos para o analisador semântico. """
     def __init__(self):
         self.escopo_raiz = Escopo(nome="global")
         self.escopo_atual = self.escopo_raiz
 
     def entrar_escopo(self, nome_escopo="local"):
-        # Adiciona um novo escopo como filho do atual e move o ponteiro para ele
         self.escopo_atual = self.escopo_atual.adicionar_filho(nome_escopo)
 
     def sair_escopo(self):
-        # Apenas move o ponteiro para o escopo pai, sem apagar nada
         if self.escopo_atual.pai:
             self.escopo_atual = self.escopo_atual.pai
 
@@ -64,14 +64,13 @@ class TabelaSimbolos:
         return self.escopo_atual.buscar(nome)
 
     def _imprimir_recursivo(self, escopo: Escopo, nivel=0):
-        """ Função auxiliar para imprimir a árvore de escopos. """
         indentacao = "  " * nivel
         saida = f"{indentacao}--- Escopo: {escopo.nome} (Nível {nivel}) ---\n"
 
         if not escopo.simbolos:
             saida += f"{indentacao}  (vazio)\n"
         else:
-            for nome, simbolo in escopo.simbolos.items():
+            for simbolo in escopo.simbolos.values():
                 saida += f"{indentacao}  {simbolo}\n"
 
         for filho in escopo.filhos:
@@ -80,5 +79,4 @@ class TabelaSimbolos:
         return saida
 
     def __str__(self):
-        # Inicia a impressão a partir do escopo raiz
         return self._imprimir_recursivo(self.escopo_raiz)

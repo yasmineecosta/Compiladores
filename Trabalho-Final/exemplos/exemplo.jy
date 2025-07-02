@@ -14,11 +14,12 @@ void mostrarMedia (int v1, int v2){
     decIds:
          x : real;
          y : int;
-     x = (v1+v2)/2;
+         x = (v1+v2)/2;
      print ("Resultado: ", x);
 
     }
-    real media (real n1, real n2){
+
+real media (real n1, real n2){
     decIds: // teste comentario
          m : real;
          m = (n1 + n2)/2;

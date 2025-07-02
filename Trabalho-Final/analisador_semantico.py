@@ -1,10 +1,9 @@
-# Trabalho-Final/analisador_semantico.py (Versão 100% Completa)
+# Trabalho-Final/analisador_semantico.py (Versão Corrigida com Parâmetros Declarados no Escopo)
 
 from JavythonParser import JavythonParser
 from JavythonListener import JavythonListener
 from JavythonVisitor import JavythonVisitor
 from tabela_simbolos import TabelaSimbolos, Simbolo
-
 
 # ===================================================================
 # Visitor dedicado a determinar o tipo de qualquer nó de expressão.
@@ -19,7 +18,6 @@ class ExpressionTypeVisitor(JavythonVisitor):
         if erro_msg not in self.erros:
             self.erros.append(erro_msg)
 
-    # --- Átomos (folhas da árvore de expressão) ---
     def visitIdAtom(self, ctx: JavythonParser.IdAtomContext):
         nome_var = ctx.ID().getText()
         simbolo = self.tabela.buscar(nome_var)
@@ -46,9 +44,18 @@ class ExpressionTypeVisitor(JavythonVisitor):
         if not simbolo or simbolo.categoria != 'metodo':
             self.reportar_erro(ctx.start.line, f"Função '{nome_func}' não declarada.")
             return "indefinido"
+
+        argumentos = ctx.chamadaFuncao().expressao()
+        parametros_esperados = simbolo.parametros if hasattr(simbolo, 'parametros') else []
+
+        if len(argumentos) != len(parametros_esperados):
+            self.reportar_erro(
+                ctx.start.line,
+                f"Função '{nome_func}' chamada com {len(argumentos)} argumento(s), mas espera {len(parametros_esperados)}."
+            )
+
         return simbolo.tipo
 
-    # --- Expressões Compostas ---
     def visitCompExpr(self, ctx: JavythonParser.CompExprContext):
         tipo_esq = self.visit(ctx.expressao(0))
         tipo_dir = self.visit(ctx.expressao(1))
@@ -75,21 +82,15 @@ class ExpressionTypeVisitor(JavythonVisitor):
     def visitParensExpr(self, ctx: JavythonParser.ParensExprContext):
         return self.visit(ctx.expressao())
 
-
 # ===================================================================
 # Listener principal para gerenciamento de escopo e regras semânticas
 # ===================================================================
 class AnalisadorSemantico(JavythonListener):
     def __init__(self):
-        """
-        Este é o construtor que estava em falta. Ele inicializa
-        a tabela de símbolos e a lista de erros.
-        """
         self.tabela = TabelaSimbolos()
         self.erros = []
         self.expression_visitor = ExpressionTypeVisitor(self.tabela, self.erros)
 
-        # Adiciona funções nativas ao escopo global
         self.tabela.declarar(Simbolo(nome='input', tipo='void', categoria='metodo'))
         self.tabela.declarar(Simbolo(nome='print', tipo='void', categoria='metodo'))
 
@@ -103,20 +104,27 @@ class AnalisadorSemantico(JavythonListener):
         tipo_retorno = ctx.tipo().getText()
         linha = ctx.ID().getSymbol().line
 
-        simbolo_metodo = Simbolo(nome=nome, tipo=tipo_retorno, categoria='metodo', linha=linha)
-        if not self.tabela.declarar(simbolo_metodo):
-            self.reportar_erro(linha, f"Identificador '{nome}' já declarado no escopo global.")
-
-        self.tabela.entrar_escopo()
-
+        parametros = []
         if ctx.parametros():
             for param_ctx in ctx.parametros().parametro():
                 nome_param = param_ctx.ID().getText()
                 tipo_param = param_ctx.tipo().getText()
-                linha_param = param_ctx.ID().getSymbol().line
-                simbolo_param = Simbolo(nome=nome_param, tipo=tipo_param, categoria='parametro', linha=linha_param)
-                if not self.tabela.declarar(simbolo_param):
-                    self.reportar_erro(linha_param, f"Parâmetro '{nome_param}' já foi declarado neste escopo.")
+                parametros.append((tipo_param, nome_param))
+
+        simbolo_metodo = Simbolo(
+            nome=nome,
+            tipo=tipo_retorno,
+            categoria='metodo',
+            linha=linha,
+            parametros=parametros
+        )
+        self.tabela.declarar(simbolo_metodo)
+
+        self.tabela.entrar_escopo(nome)  # Agora sim entra no escopo onde os parâmetros serão usados
+
+        # Declarar os parâmetros dentro do escopo correto
+        for tipo_param, nome_param in parametros:
+            self.tabela.declarar(Simbolo(nome_param, tipo_param, categoria='parametro', linha=linha))
 
     def exitMetodo(self, ctx: JavythonParser.MetodoContext):
         self.tabela.sair_escopo()
@@ -127,33 +135,38 @@ class AnalisadorSemantico(JavythonListener):
     def exitMain(self, ctx: JavythonParser.MainContext):
         self.tabela.sair_escopo()
 
-    def exitDecl(self, ctx: JavythonParser.DeclContext):
+    def enterDecl(self, ctx: JavythonParser.DeclContext):
         tipo = ctx.tipo().getText()
-        for id_node in ctx.idList().ID():
-            nome_var = id_node.getText()
-            linha = id_node.getSymbol().line
-            simbolo = Simbolo(nome=nome_var, tipo=tipo, categoria='variavel', linha=linha)
+        for id_token in ctx.idList().ID():
+            nome = id_token.getText()
+            linha = id_token.getSymbol().line
+            simbolo = Simbolo(nome=nome, tipo=tipo, categoria='variavel', linha=linha)
             if not self.tabela.declarar(simbolo):
-                self.reportar_erro(linha, f"Variável '{nome_var}' já foi declarada.")
+                self.reportar_erro(linha, f"Redeclaração da variável '{nome}'.")
 
     def exitAtribuicao(self, ctx: JavythonParser.AtribuicaoContext):
         nome_var = ctx.ID().getText()
-        linha = ctx.ID().getSymbol().line
         simbolo = self.tabela.buscar(nome_var)
         if not simbolo:
-            self.reportar_erro(linha, f"Variável '{nome_var}' não declarada.")
+            self.reportar_erro(ctx.start.line, f"Variável '{nome_var}' não declarada.")
             return
 
-        tipo_expr = self.expression_visitor.visit(ctx.expressao())
-        if tipo_expr == "indefinido": return
+        tipo_atribuido = self.expression_visitor.visit(ctx.expressao())
+        if tipo_atribuido == "indefinido": return
 
-        tipos_compativeis = (simbolo.tipo == tipo_expr) or (simbolo.tipo == "real" and tipo_expr == "int")
-        if not tipos_compativeis:
-            self.reportar_erro(linha,
-                               f"Atribuição de tipo incompatível para '{nome_var}'. Esperado '{simbolo.tipo}', mas recebeu '{tipo_expr}'.")
+        if simbolo.tipo != tipo_atribuido and not (
+            simbolo.tipo in ["int", "real"] and tipo_atribuido in ["int", "real"]):
+            self.reportar_erro(ctx.start.line, f"Tipo incompatível na atribuição: variável '{nome_var}' é '{simbolo.tipo}' mas recebeu '{tipo_atribuido}'.")
 
-    def exitIfCmd(self, ctx: JavythonParser.IfCmdContext):
-        tipo_teste = self.expression_visitor.visit(ctx.expressao())
-        if tipo_teste != "bool" and tipo_teste != "indefinido":
-            self.reportar_erro(ctx.expressao().start.line,
-                               f"A condição do 'if' deve ser booleana, mas é do tipo '{tipo_teste}'.")
+    def exitReturnCmd(self, ctx: JavythonParser.ReturnCmdContext):
+        self.expression_visitor.visit(ctx.expressao())
+
+    def exitPrintCmd(self, ctx: JavythonParser.PrintCmdContext):
+        for expr in ctx.expressao():
+            self.expression_visitor.visit(expr)
+
+    def exitInputCmd(self, ctx: JavythonParser.InputCmdContext):
+        for id_token in ctx.idList().ID():
+            nome = id_token.getText()
+            if not self.tabela.buscar(nome):
+                self.reportar_erro(id_token.getSymbol().line, f"Variável '{nome}' não declarada.")
