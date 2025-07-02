@@ -1,4 +1,4 @@
-// Generated from C:/Users/Yasmine Martins/Desktop/vsCode/universidade/sexto_periodo/Compiladores/Javython.g4 by ANTLR 4.13.2
+// Generated from C:/Users/Yasmine Martins/Desktop/vsCode/universidade/sexto_periodo/Compiladores/Trabalho-Final/Javython.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -157,16 +157,6 @@ public interface JavythonListener extends ParseTreeListener {
 	 */
 	void exitBreakCmd(JavythonParser.BreakCmdContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JavythonParser#atribuicaoFor}.
-	 * @param ctx the parse tree
-	 */
-	void enterAtribuicaoFor(JavythonParser.AtribuicaoForContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JavythonParser#atribuicaoFor}.
-	 * @param ctx the parse tree
-	 */
-	void exitAtribuicaoFor(JavythonParser.AtribuicaoForContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link JavythonParser#ifCmd}.
 	 * @param ctx the parse tree
 	 */
@@ -197,15 +187,157 @@ public interface JavythonListener extends ParseTreeListener {
 	 */
 	void exitForCmd(JavythonParser.ForCmdContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JavythonParser#expressao}.
+	 * Enter a parse tree produced by {@link JavythonParser#atribuicaoFor}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpressao(JavythonParser.ExpressaoContext ctx);
+	void enterAtribuicaoFor(JavythonParser.AtribuicaoForContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link JavythonParser#expressao}.
+	 * Exit a parse tree produced by {@link JavythonParser#atribuicaoFor}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpressao(JavythonParser.ExpressaoContext ctx);
+	void exitAtribuicaoFor(JavythonParser.AtribuicaoForContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavythonParser#incDecFor}.
+	 * @param ctx the parse tree
+	 */
+	void enterIncDecFor(JavythonParser.IncDecForContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavythonParser#incDecFor}.
+	 * @param ctx the parse tree
+	 */
+	void exitIncDecFor(JavythonParser.IncDecForContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code RealAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterRealAtom(JavythonParser.RealAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code RealAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitRealAtom(JavythonParser.RealAtomContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code MulDivExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterMulDivExpr(JavythonParser.MulDivExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code MulDivExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitMulDivExpr(JavythonParser.MulDivExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code StringAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringAtom(JavythonParser.StringAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StringAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringAtom(JavythonParser.StringAtomContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BoolAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolAtom(JavythonParser.BoolAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BoolAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolAtom(JavythonParser.BoolAtomContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ParensExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterParensExpr(JavythonParser.ParensExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ParensExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitParensExpr(JavythonParser.ParensExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CompExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompExpr(JavythonParser.CompExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CompExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompExpr(JavythonParser.CompExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code UnaryExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryExpr(JavythonParser.UnaryExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code UnaryExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryExpr(JavythonParser.UnaryExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IntAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntAtom(JavythonParser.IntAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IntAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntAtom(JavythonParser.IntAtomContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code AddSubExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddSubExpr(JavythonParser.AddSubExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AddSubExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddSubExpr(JavythonParser.AddSubExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IdAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdAtom(JavythonParser.IdAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IdAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdAtom(JavythonParser.IdAtomContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FuncCallExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncCallExpr(JavythonParser.FuncCallExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FuncCallExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncCallExpr(JavythonParser.FuncCallExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JavythonParser#incremento}.
 	 * @param ctx the parse tree

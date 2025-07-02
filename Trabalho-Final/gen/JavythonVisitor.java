@@ -1,4 +1,4 @@
-// Generated from C:/Users/Yasmine Martins/Desktop/vsCode/universidade/sexto_periodo/Compiladores/Javython.g4 by ANTLR 4.13.2
+// Generated from C:/Users/Yasmine Martins/Desktop/vsCode/universidade/sexto_periodo/Compiladores/Trabalho-Final/Javython.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -100,12 +100,6 @@ public interface JavythonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBreakCmd(JavythonParser.BreakCmdContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JavythonParser#atribuicaoFor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAtribuicaoFor(JavythonParser.AtribuicaoForContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link JavythonParser#ifCmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -124,11 +118,94 @@ public interface JavythonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForCmd(JavythonParser.ForCmdContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JavythonParser#expressao}.
+	 * Visit a parse tree produced by {@link JavythonParser#atribuicaoFor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpressao(JavythonParser.ExpressaoContext ctx);
+	T visitAtribuicaoFor(JavythonParser.AtribuicaoForContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavythonParser#incDecFor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIncDecFor(JavythonParser.IncDecForContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code RealAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRealAtom(JavythonParser.RealAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MulDivExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulDivExpr(JavythonParser.MulDivExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StringAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAtom(JavythonParser.StringAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BoolAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolAtom(JavythonParser.BoolAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ParensExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParensExpr(JavythonParser.ParensExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code CompExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompExpr(JavythonParser.CompExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code UnaryExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnaryExpr(JavythonParser.UnaryExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IntAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntAtom(JavythonParser.IntAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AddSubExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddSubExpr(JavythonParser.AddSubExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IdAtom}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdAtom(JavythonParser.IdAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code FuncCallExpr}
+	 * labeled alternative in {@link JavythonParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFuncCallExpr(JavythonParser.FuncCallExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JavythonParser#incremento}.
 	 * @param ctx the parse tree

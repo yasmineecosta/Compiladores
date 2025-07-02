@@ -36,15 +36,15 @@ main:
  input(n3, n4); // teste comentario
  print(mostrarMedia(n3, n4));
 
- for(i=0; i>0 ; i++){
+ for(i=0; i>sadf ; i++){
     print("Teste for.");
  }
  
- if(i>0){
+ if(i>sadf){
  } else{
  }
  
- while(i>0){
+ while(i>sadf){
  break;
  }
 
