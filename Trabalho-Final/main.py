@@ -116,7 +116,7 @@ def main():
             print("\n--- Código de Três Endereços (TAC) ---")
             tac_generator = TACGenerator(analisador_semantico.tabela)
             tac_instructions = tac_generator.visit(tree)
-            output_tac_file = f"{base_name}_tac.txt"
+            output_tac_file = f"{base_name}.tac"
             with open(output_tac_file, "w", encoding="utf-8") as f:
                 for instr in tac_instructions:
                     print(instr)
@@ -124,6 +124,7 @@ def main():
             print(f"✔️ Código TAC salvo em '{output_tac_file}'.")
 
             # --- Geração de Código Jasmin ---
+            '''
             print("\n--- Código Intermediário (Jasmin) ---")
             jasmin_gen = JasminGenerator(analisador_semantico)
             jasmin_code = jasmin_gen.visit(tree)
@@ -133,7 +134,7 @@ def main():
             #print(jasmin_code)
             print(f"✔️ Código Jasmin salvo em '{output_jasmin_file}'.")
 
-
+'''
 
     except FileNotFoundError:
         print(f"\nERRO: O arquivo '{input_file}' não foi encontrado.")

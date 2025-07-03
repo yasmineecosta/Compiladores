@@ -2,8 +2,8 @@ program: If_Else;
 main:
   decIds:
     b: bool;
-  b = true;
-  if (b) {
+
+  if (true) {
     print(1);
   } else {
     print(0);

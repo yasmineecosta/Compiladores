@@ -1,0 +1,18 @@
+program: TesteIO;
+
+main:
+    decIds:
+        nome: str;
+        idade: int;
+        ano_nascimento: int;
+
+    print("Por favor, digite o seu nome:");
+    input(nome);
+
+    print("Agora, digite a sua idade:");
+    input(idade);
+
+    ano_nascimento = 2025 - idade;
+
+    print("Ola, ", nome, "! Se voce tem ", idade, " anos, voce nasceu em ", ano_nascimento, ".");
+end

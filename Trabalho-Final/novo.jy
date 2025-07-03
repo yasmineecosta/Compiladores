@@ -13,10 +13,10 @@ int fatorial (int fat){
 
 void mostrarMedia (int v1, int v2){
     decIds:
-         x : real;
+        x : real;
 
     x = (v1+v2)/2.0; // Dividir por 2.0 para garantir resultado real
-    print ("Resultado: ", x);
+    print("Resultado: ", x);
 }
 
 main:
@@ -24,16 +24,15 @@ main:
         numero : int;
         n1, n2, i : int;
 
-
     print("Programa Fatorial Digite o valor?");
     input(numero);
-    print("O fatorial e: ", fatorial(numero)); // CORRIGIDO
+    print("O fatorial e: ", fatorial(numero));
 
     print("Programa Media Digite os valores?");
     input(n1, n2);
-    mostrarMedia(n1,n2); // CORRIGIDO
+    mostrarMedia(n1,n2);
 
-    for(i=0; i < 10 ;i++){ // CORRIGIDO
+    for(i=0; i < 10 ;i++){
         print("Teste for.");
     }
 end

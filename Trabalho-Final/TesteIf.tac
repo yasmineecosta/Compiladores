@@ -1,0 +1,17 @@
+label main_entry
+a = 10
+t1 = a > 5
+if_false t1 goto L1
+print "a e maior que 5"
+println
+goto L2
+label L1
+print "a nao e maior que 5"
+println
+label L2
+t2 = a < 5
+if_false t2 goto L3
+print "a e menor que 5"
+println
+label L3
+return

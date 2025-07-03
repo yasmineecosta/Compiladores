@@ -1,15 +1,17 @@
-# tac_generator.py
+# tac_generator.py (Versão Corrigida e Mais Robusta)
 
+from antlr4.tree.Tree import TerminalNode
 from JavythonParser import JavythonParser
 from JavythonVisitor import JavythonVisitor
-from tabela_simbolos import TabelaSimbolos # Você precisará da tabela de símbolos
+from tabela_simbolos import TabelaSimbolos
+
 
 class TACGenerator(JavythonVisitor):
     def __init__(self, tabela_simbolos: TabelaSimbolos):
         self.instructions = []
         self.temp_count = 0
         self.label_count = 0
-        self.tabela_simbolos = tabela_simbolos # Acesso à tabela de símbolos
+        self.tabela_simbolos = tabela_simbolos
 
     def new_temp(self):
         self.temp_count += 1
@@ -22,175 +24,137 @@ class TACGenerator(JavythonVisitor):
     def emit(self, instruction):
         self.instructions.append(instruction)
 
-    # Métodos de visita para cada regra da AST
-    # Cada método visit* deve retornar o 'endereço' do resultado da sua subárvore,
-    # que pode ser um nome de variável, um literal ou um temporário.
-
     def visitProgram(self, ctx: JavythonParser.ProgramContext):
-        # Visitar declarações globais (se houver, embora seu exemplo não tenha)
-        if ctx.decIds():
-            self.visit(ctx.decIds())
-
-        # Visitar métodos
-        for metodo_ctx in ctx.metodo():
-            self.visit(metodo_ctx)
-
-        # Visitar main
+        if ctx.decIds(): self.visit(ctx.decIds())
+        for metodo_ctx in ctx.metodo(): self.visit(metodo_ctx)
         self.visit(ctx.main())
         return self.instructions
 
     def visitMetodo(self, ctx: JavythonParser.MetodoContext):
         method_name = ctx.ID().getText()
-        # Emitir rótulo de entrada do método
         self.emit(f"label {method_name}_entry")
-
-        # Entrar em novo escopo (já feito pelo analisador semântico, mas aqui é para contexto)
-        # self.tabela_simbolos.entrar_escopo(method_name) # Se precisar gerenciar escopo aqui
-
-        # Declarations within method
-        if ctx.decIds():
-            self.visit(ctx.decIds())
-
-        # Commands within method body
-        for comando_ctx in ctx.comando():
-            self.visit(comando_ctx)
-
-        # Retorno implícito para métodos void ou garantir um return para não-void
+        if ctx.decIds(): self.visit(ctx.decIds())
+        for comando_ctx in ctx.comando(): self.visit(comando_ctx)
         simbolo_metodo = self.tabela_simbolos.buscar(method_name)
         if simbolo_metodo and simbolo_metodo.tipo == "void":
-            self.emit("return")
-        # else: for non-void methods, the `returnCmd` will handle the return
-
-        # Sair do escopo (já feito pelo analisador semântico)
-        # self.tabela_simbolos.sair_escopo()
+            if not self.instructions or not self.instructions[-1].strip().startswith("return"):
+                self.emit("return")
 
     def visitMain(self, ctx: JavythonParser.MainContext):
         self.emit("label main_entry")
-        # Similar ao método, mas sem retorno explícito
-        if ctx.decIds():
-            self.visit(ctx.decIds())
-        for comando_ctx in ctx.comando():
-            self.visit(comando_ctx)
-        self.emit("return") # Ou exit, dependendo da convenção do seu TAC
-
-    # Declarações não geram TAC, apenas marcam na tabela de símbolos
-    def visitDecl(self, ctx: JavythonParser.DeclContext):
-        pass # Already handled by symbol table
+        if ctx.decIds(): self.visit(ctx.decIds())
+        for comando_ctx in ctx.comando(): self.visit(comando_ctx)
+        self.emit("return")
 
     def visitAtribuicao(self, ctx: JavythonParser.AtribuicaoContext):
         var_name = ctx.ID().getText()
-        expr_result = self.visit(ctx.expressao()) # Obtém o temporário/valor da expressão
+        expr_result = self.visit(ctx.expressao())
         self.emit(f"{var_name} = {expr_result}")
-        return var_name # Retorna o nome da variável atribuída
 
     def visitReturnCmd(self, ctx: JavythonParser.ReturnCmdContext):
-        expr_result = self.visit(ctx.expressao())
-        self.emit(f"return {expr_result}")
+        if ctx.expressao():
+            expr_result = self.visit(ctx.expressao())
+            self.emit(f"return {expr_result}")
+        else:
+            self.emit("return")
 
     def visitInputCmd(self, ctx: JavythonParser.InputCmdContext):
         for id_node in ctx.idList().ID():
             self.emit(f"read {id_node.getText()}")
 
     def visitPrintCmd(self, ctx: JavythonParser.PrintCmdContext):
-        for expr_ctx in ctx.expressao():
+        # Itera sobre cada expressão dentro do print
+        for i, expr_ctx in enumerate(ctx.expressao()):
             expr_result = self.visit(expr_ctx)
-            self.emit(f"print {expr_result}")
+            # Evita imprimir "None" para chamadas de função void
+            if expr_result is not None:
+                self.emit(f"print {expr_result}")
 
+        # Emite um comando para pular a linha ao final do comando print
+        self.emit("println")
+
+    # CORREÇÃO PRINCIPAL: Lógica robusta para IF/ELSE
     def visitIfCmd(self, ctx: JavythonParser.IfCmdContext):
-        cond_temp = self.visit(ctx.expressao())
-        label_else = self.new_label()
-        label_end_if = self.new_label()
+        cond_result = self.visit(ctx.expressao())
 
-        self.emit(f"if_false {cond_temp} goto {label_else}")
+        # Procura pelo token 'else' para saber se é um if-then ou if-then-else
+        else_node = None
+        for child in ctx.children:
+            if isinstance(child, TerminalNode) and child.getSymbol().text == 'else':
+                else_node = child
+                break
 
-        # Visit THEN block
-        then_commands = [c for c in ctx.comando() if c.start.tokenIndex < (ctx.children[ctx.children.index(ctx.expressao()) + 2].getSymbol().tokenIndex if 'else' in [str(child) for child in ctx.children] else float('inf'))]
-        for cmd_ctx in then_commands:
-            self.visit(cmd_ctx)
+        if else_node:  # Estrutura IF-THEN-ELSE
+            label_else = self.new_label()
+            label_end = self.new_label()
 
-        if len(ctx.comando()) > len(then_commands): # Check if there's an ELSE block
-            self.emit(f"goto {label_end_if}")
+            self.emit(f"if_false {cond_result} goto {label_else}")
+
+            # Bloco THEN: comandos antes do 'else'
+            for cmd in ctx.comando():
+                if cmd.start.tokenIndex < else_node.getSymbol().tokenIndex:
+                    self.visit(cmd)
+            self.emit(f"goto {label_end}")
+
+            # Bloco ELSE
             self.emit(f"label {label_else}")
-            # Visit ELSE block
-            else_commands = [c for c in ctx.comando() if c.start.tokenIndex >= (ctx.children[ctx.children.index(ctx.expressao()) + 2].getSymbol().tokenIndex + 1)] # Approximate index
-            for cmd_ctx in else_commands:
-                self.visit(cmd_ctx)
-        else:
-            self.emit(f"label {label_else}") # No else, so jump directly to end_if if false
+            for cmd in ctx.comando():
+                if cmd.start.tokenIndex > else_node.getSymbol().tokenIndex:
+                    self.visit(cmd)
+            self.emit(f"label {label_end}")
 
-        self.emit(f"label {label_end_if}")
+        else:  # Estrutura IF-THEN (sem else)
+            label_end = self.new_label()
+            self.emit(f"if_false {cond_result} goto {label_end}")
 
+            # Bloco THEN
+            for cmd in ctx.comando():
+                self.visit(cmd)
+            self.emit(f"label {label_end}")
 
     def visitForCmd(self, ctx: JavythonParser.ForCmdContext):
-        label_loop_start = self.new_label()
-        label_condition = self.new_label()
-        label_end_for = self.new_label()
-
-        # Initialization
-        if ctx.atribuicaoFor():
-            self.visit(ctx.atribuicaoFor(0))
-
-        self.emit(f"label {label_condition}")
-
-        # Condition
-        cond_temp = self.visit(ctx.expressao())
-        self.emit(f"if_false {cond_temp} goto {label_end_for}")
-
-        # Body
-        for comando_ctx in ctx.comando():
-            self.visit(comando_ctx)
-
-        # Increment/Decrement
-        if ctx.incDecFor():
-            self.visit(ctx.incDecFor())
-        elif len(ctx.atribuicaoFor()) > 1: # Secondary assignment as increment
+        label_cond = self.new_label()
+        label_end = self.new_label()
+        if ctx.atribuicaoFor(0): self.visit(ctx.atribuicaoFor(0))
+        self.emit(f"label {label_cond}")
+        if ctx.expressao():
+            cond_result = self.visit(ctx.expressao())
+            self.emit(f"if_false {cond_result} goto {label_end}")
+        for comando_ctx in ctx.comando(): self.visit(comando_ctx)
+        if len(ctx.atribuicaoFor()) > 1:
             self.visit(ctx.atribuicaoFor(1))
-
-        self.emit(f"goto {label_condition}")
-        self.emit(f"label {label_end_for}")
+        elif ctx.incDecFor():
+            self.visit(ctx.incDecFor())
+        self.emit(f"goto {label_cond}")
+        self.emit(f"label {label_end}")
 
     def visitAtribuicaoFor(self, ctx: JavythonParser.AtribuicaoForContext):
-        # Similar to visitAtribuicao, but for the FOR loop's assignment
-        var_name = ctx.ID().getText()
-        expr_result = self.visit(ctx.expressao())
-        self.emit(f"{var_name} = {expr_result}")
-        return var_name
+        # A regra de atribuição do For é semanticamente igual à atribuição normal
+        self.visitAtribuicao(ctx)
 
     def visitIncDecFor(self, ctx: JavythonParser.IncDecForContext):
         var_name = ctx.ID().getText()
-        op = '++' if ctx.getChild(1).getSymbol().type == JavythonParser.T__25 else '--' # Assuming T__25 is '++'
+        op_symbol = '+' if ctx.getChild(1).getText() == '++' else '-'
         temp = self.new_temp()
-        if op == '++':
-            self.emit(f"{temp} = {var_name} + 1")
-        else:
-            self.emit(f"{temp} = {var_name} - 1")
+        self.emit(f"{temp} = {var_name} {op_symbol} 1")
         self.emit(f"{var_name} = {temp}")
-        return temp # Not strictly needed to return for increment, but consistent
 
-    # --- Expressões ---
-    def visitMulDivExpr(self, ctx: JavythonParser.MulDivExprContext):
+    def visitBinaryExpr(self, ctx):
         left = self.visit(ctx.expressao(0))
         right = self.visit(ctx.expressao(1))
         op = ctx.op.text
         temp = self.new_temp()
         self.emit(f"{temp} = {left} {op} {right}")
         return temp
+
+    def visitMulDivExpr(self, ctx: JavythonParser.MulDivExprContext):
+        return self.visitBinaryExpr(ctx)
 
     def visitAddSubExpr(self, ctx: JavythonParser.AddSubExprContext):
-        left = self.visit(ctx.expressao(0))
-        right = self.visit(ctx.expressao(1))
-        op = ctx.op.text
-        temp = self.new_temp()
-        self.emit(f"{temp} = {left} {op} {right}")
-        return temp
+        return self.visitBinaryExpr(ctx)
 
     def visitCompExpr(self, ctx: JavythonParser.CompExprContext):
-        left = self.visit(ctx.expressao(0))
-        right = self.visit(ctx.expressao(1))
-        op = ctx.op.text
-        temp = self.new_temp()
-        self.emit(f"{temp} = {left} {op} {right}")
-        return temp
+        return self.visitBinaryExpr(ctx)
 
     def visitUnaryExpr(self, ctx: JavythonParser.UnaryExprContext):
         expr_result = self.visit(ctx.expressao())
@@ -204,22 +168,21 @@ class TACGenerator(JavythonVisitor):
 
     def visitChamadaFuncao(self, ctx: JavythonParser.ChamadaFuncaoContext):
         func_name = ctx.ID().getText()
-        args = []
-        for expr_ctx in ctx.expressao():
-            arg_temp = self.visit(expr_ctx)
-            args.append(arg_temp)
-            self.emit(f"param {arg_temp}")
-
-        simbolo_metodo = self.tabela_simbolos.buscar(func_name)
-        if simbolo_metodo and simbolo_metodo.tipo != "void":
+        args = [self.visit(arg) for arg in ctx.expressao()]
+        for arg_result in args:
+            self.emit(f"param {arg_result}")
+        simbolo = self.tabela_simbolos.buscar(func_name)
+        if simbolo and simbolo.tipo != "void":
             result_temp = self.new_temp()
             self.emit(f"{result_temp} = call {func_name}, {len(args)}")
             return result_temp
         else:
             self.emit(f"call {func_name}, {len(args)}")
-            return "void_call" # Indicação de que não retorna valor
+            return None
 
-    # --- Átomos ---
+    def visitFuncCallExpr(self, ctx: JavythonParser.FuncCallExprContext):
+        return self.visit(ctx.chamadaFuncao())
+
     def visitIdAtom(self, ctx: JavythonParser.IdAtomContext):
         return ctx.getText()
 
@@ -234,6 +197,3 @@ class TACGenerator(JavythonVisitor):
 
     def visitBoolAtom(self, ctx: JavythonParser.BoolAtomContext):
         return ctx.getText()
-
-    def visitFuncCallExpr(self, ctx: JavythonParser.FuncCallExprContext):
-        return self.visit(ctx.chamadaFuncao())
