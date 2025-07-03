@@ -1,0 +1,9 @@
+program: Case_Insensitive;
+decIds:
+  meuValor: int;
+
+main:
+  PROGRAM: Case_Insensitive; // Palavra-chave
+  MEUVALOR = 10; // Identificador
+  PRINT(meuvalor); // Chamada de metodo
+END

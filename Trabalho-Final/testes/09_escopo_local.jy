@@ -1,0 +1,17 @@
+// Objetivo: Testar erro ao acessar variavel de escopo local em outro metodo[cite: 125].
+program: Escopo_Local;
+
+void metodo1(){
+  decIds:
+    x:int;
+  x=10;
+}
+
+void metodo2(){
+  print(x); // 'x' nao existe neste escopo.
+}
+
+main:
+  metodo1();
+  metodo2();
+end

@@ -1,0 +1,11 @@
+program: If_Else;
+main:
+  decIds:
+    b: bool;
+  b = true;
+  if (b) {
+    print(1);
+  } else {
+    print(0);
+  }
+end

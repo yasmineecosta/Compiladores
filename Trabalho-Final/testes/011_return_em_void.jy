@@ -1,0 +1,10 @@
+// Objetivo: Testar erro ao retornar valor em um metodo void[cite: 130].
+program: Return_Void;
+
+void teste() {
+  return 1;
+}
+
+main:
+  teste();
+end

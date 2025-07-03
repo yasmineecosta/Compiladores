@@ -1,0 +1,17 @@
+// Objetivo: Testar erro ao passar numero incorreto de argumentos para um metodo[cite: 132].
+program: Args_Errados;
+
+int soma(int a, int b){
+  return a+b;
+}
+
+// Objetivo: Testar erro ao passar argumento de tipo incorreto para um metodo
+int dobro(int val){
+  return val*2;
+}
+main:
+  decIds:
+    res: int;
+  res = soma(10);
+  res = dobro("texto");
+end

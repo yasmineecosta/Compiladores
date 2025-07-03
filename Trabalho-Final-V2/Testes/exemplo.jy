@@ -1,0 +1,46 @@
+program: Exemplo1; //Exemplo 01 da Documentação
+decIds:
+    i : int;
+
+int fatorial (int fat){
+    if (fat > 1){
+        print (fat);
+        return fat * fatorial(fat - 1);
+    } else {
+        return 1;
+    }
+}
+void mostrarMedia (int v1, int v2){
+    decIds:
+         x : real;
+         y : int;
+
+    x = (v1+v2)/2;
+    print ("Resultado: ", x);
+
+    }
+
+real media (real n1, real n2){
+    decIds: // teste comentario
+         m : real;
+         m = (n1 + n2)/2;
+         return m;
+}
+main:
+    decIds:
+        numero : int;
+        n1, n2: int;
+
+ print("Programa Fatorial Digite o valor?");
+ input(numero);
+ print(fatorial(numero));
+
+ print("Programa Media Digite os valores?");
+ input(n1, n2); // teste comentario
+ print(mostrarMedia(n1, n2));
+
+ for(i=0; i == 0 ;i++){
+    print("Teste for.");
+ }
+
+end

@@ -1,0 +1,25 @@
+// Objetivo: Testar o reconhecimento de todos os tokens validos.
+program: Lex_Valido;
+decIds:
+  i: int;
+  r: real;
+  s: str;
+  b: bool;
+
+main:
+  // Comentario de linha
+  i = 10;
+  r = -3.14;
+  s = "Teste de string";
+  b = true;
+  b = !false;
+  i = i + (i * i) / i;
+  i++;
+  i--;
+
+  if (i > 0) {
+    print("Ok");
+  } else {
+    break;
+  }
+end

@@ -1,0 +1,11 @@
+// Objetivo: Testar a sintaxe do 'for' com partes opcionais[cite: 190].
+program: For_Opcional;
+main:
+  decIds:
+    i: int;
+  i = 0;
+  for (; i < 10 ;) {
+    print(i);
+    i++;
+  }
+end

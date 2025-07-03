@@ -1,0 +1,21 @@
+// Objetivo: Testar um programa completo e funcional com recursao.
+program: Fatorial_Recursivo;
+
+int fatorial(int n) {
+  if (n < 2) {
+    return 1;
+  } else {
+    return n * fatorial(n - 1);
+  }
+}
+
+main:
+  decIds:
+    numero: int;
+    resultado: int;
+
+  print("Digite um numero para calcular o fatorial:");
+  input(numero);
+  resultado = fatorial(numero);
+  print("O fatorial de ", numero, " eh: ", resultado);
+end

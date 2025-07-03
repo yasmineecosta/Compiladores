@@ -1,0 +1,11 @@
+
+// Objetivo: Testar erro ao usar uma variavel nao declarada.
+// Objetivo: Testar erro ao redeclarar uma variavel no mesmo escopo[cite: 103].
+program: Redeclaracao;
+main:
+  decIds:
+    a: int;
+    a: real;
+    x = 10;
+    a = "texto";
+end

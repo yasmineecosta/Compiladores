@@ -1,0 +1,27 @@
+program: Teste;
+
+decIDs:
+ x: int;
+
+void mais(int x){
+
+    x=10;
+}
+
+int mais(int x){
+    decIds:
+        y: int;
+    x=15;
+    y=x;
+    return y;
+}
+
+main:
+    decIds:
+        a: int;
+
+
+    a = 10;
+
+    // y;
+end

@@ -1,0 +1,7 @@
+// Objetivo: Testar erro de incompatibilidade de tipos em uma operacao[cite: 98].
+program: Operacao_Invalida;
+main:
+  decIds:
+    r: bool;
+  r = 15 + true;
+end

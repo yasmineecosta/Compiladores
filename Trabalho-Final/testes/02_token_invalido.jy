@@ -1,0 +1,5 @@
+// Objetivo: Testar a rejeicao de um caractere invalido.
+program: Lex_Invalido;
+main:
+  int a = 5 @ 2; // O simbolo '@' e invalido.
+end

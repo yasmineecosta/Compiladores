@@ -1,0 +1,84 @@
+program: ProgramaCompleto;
+
+decIds:
+  // PI = 3.14;
+  mensagem : str;
+  contador : int;
+
+int fatorial(int n) {
+  decIds:
+    resultado : int;
+
+  if (n > 1) {
+    resultado = n * fatorial(n - 1);
+    return resultado;"
+  } else {
+    return 1;
+  }
+}
+
+real media(real a, real b) {
+  decIds:
+    m : real;
+
+  m = (a + b) / 2;
+  return m;
+}
+
+void mostrarResultado(str label, real valor) {
+  decIds:
+    prefixo : str;
+  prefixo = "Resultado:";
+  print(prefixo, label, valor);
+}
+
+main:
+decIds:
+  valor : int;
+  resultadoFat : int;
+  x, y : real;
+  m : real;
+  i, soma : int;
+  PI : real;
+
+  PI = 100;
+  mensagem = "Bem-vindo ao Programa Completo!";
+  print(mensagem);
+
+  // Fatorial
+  print("Digite um número para fatorial:");
+  input(valor);
+  resultadoFat = fatorial(valor);
+  print("Fatorial de", valor, "é:", resultadoFat);
+
+  // Média
+  print("Digite dois valores reais:");
+  input(x, y);
+  m = media(x, y);
+  mostrarResultado("média calculada", m);
+
+  // Laço for
+  soma = 0;
+  for (i = 0; i < 5; i++) {
+    soma = soma + i;
+  }
+  print("Soma acumulada no for:", soma);
+
+  // Laço for
+  for (i = 0; true; i++) {
+    soma = soma + i;
+  }
+
+  // Laço for
+  for (i = 0; true; i=i-5) {
+    soma = soma + i;
+  }
+
+  // Laço while
+  while (i > 0) {
+    print("Contagem regressiva:", i);
+    i--;
+  }
+
+  print("Fim do programa!");
+end

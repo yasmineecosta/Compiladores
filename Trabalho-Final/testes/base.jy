@@ -1,8 +1,9 @@
 program: Exemplo1; //Exemplo 01 da Documentação
 decIds:
-    i : int;
+    i, PI: int;
 
 int fatorial (int fat){
+
     if (fat > 1){
         print (fat);
         return fat * fatorial(fat - 1);
@@ -14,6 +15,7 @@ void mostrarMedia (int v1, int v2){
     decIds:
          x : real;
          y : int;
+
          x = (v1+v2)/2;
      print ("Resultado: ", x);
 
@@ -29,14 +31,15 @@ main:
     decIds:
         numero : int;
         n1, n2, i : int;
+        n3 : real;
 
  print("Programa Fatorial Digite o valor?");
  input(numero);
- print(fatorial(numero));
+ print(fatorial(n1));
 
  print("Programa Media Digite os valores?");
  input(n1, n2); // teste comentario
- print(mostrarMedia(n1, n2));
+ print(mostrarMedia(n1,n2));
 
  for(i=0; i == 0 ;i++){
     print("Teste for.");
