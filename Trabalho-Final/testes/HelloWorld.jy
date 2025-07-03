@@ -1,0 +1,6 @@
+program: HelloWorld;
+
+main:
+    print("Hello, World from Javython!");
+    print("Testing numbers: ", 123);
+end

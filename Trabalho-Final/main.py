@@ -1,6 +1,7 @@
 # Trabalho-Final/main.py (Versão Final com Impressão da Tabela de Símbolos)
 
 import sys
+import os
 from antlr4 import *
 from antlr4.error.ErrorListener import ErrorListener
 
@@ -8,7 +9,8 @@ from JavythonLexer import JavythonLexer
 from JavythonParser import JavythonParser
 from ast_listener import ASTListener
 from analisador_semantico import AnalisadorSemantico
-from tac_generator import TACGenerator # Novo import
+from tac_generator import TACGenerator
+from jasmin_generator import JasminGenerator
 
 def print_section_header(title):
     """ Imprime um cabeçalho padronizado para a apresentação. """
@@ -34,6 +36,7 @@ def main():
         sys.exit(1)
 
     input_file = sys.argv[1]
+    base_name = os.path.splitext(os.path.basename(input_file))[0]
     print(f"Iniciando compilação do arquivo: {input_file}")
 
     try:
@@ -113,8 +116,24 @@ def main():
             print("\n--- Código de Três Endereços (TAC) ---")
             tac_generator = TACGenerator(analisador_semantico.tabela)
             tac_instructions = tac_generator.visit(tree)
-            for instr in tac_instructions:
-                print(instr)
+            output_tac_file = f"{base_name}_tac.txt"
+            with open(output_tac_file, "w", encoding="utf-8") as f:
+                for instr in tac_instructions:
+                    print(instr)
+                    f.write(instr + "\n")
+            print(f"✔️ Código TAC salvo em '{output_tac_file}'.")
+
+            # --- Geração de Código Jasmin ---
+            print("\n--- Código Intermediário (Jasmin) ---")
+            jasmin_gen = JasminGenerator(analisador_semantico)
+            jasmin_code = jasmin_gen.visit(tree)
+            output_jasmin_file = f"{base_name}.j"
+            with open(output_jasmin_file, "w", encoding="utf-8") as f:
+                f.write(jasmin_code)
+            #print(jasmin_code)
+            print(f"✔️ Código Jasmin salvo em '{output_jasmin_file}'.")
+
+
 
     except FileNotFoundError:
         print(f"\nERRO: O arquivo '{input_file}' não foi encontrado.")
